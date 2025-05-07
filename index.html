@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HermesIA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    
+.percent-range:disabled {
+    background: rgb(255, 255, 255);
+    width: 30vw;
+    appearance: none; /* Remove estilos padrão em alguns browsers */
+    -webkit-appearance: none;
+    border-radius: 30px;
+    position: relative;
+  }
+  /* Remove o círculo (thumb) */
+.percent-range:disabled::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 0;
+height: 0;
+border: none;
+}
+.percent-range:disabled::-moz-range-thumb {
+width: 0;
+height: 0;
+border: none;
+background: none;
+}
+  </style>
+</head>
+<body class="bg-light">
+    <div class="modal fade" id="instrucoesModal" tabindex="-1" aria-labelledby="instrucoesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="instrucoesModalLabel">Bem-vindo ao HermesIA</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body" style="max-height: 80vh; overflow-y: auto;">
+              
+              <p>
+                Basta responder o formulário que a inteligência artificial te entregará a resposta. Vale ressaltar que em nossa base temos:
+                <strong>
+                    <ul>
+                        <li>Bronquite crônica;</li>
+                        <li>Diabetes tipo 2;</li> 
+                        <li>Hipertensão arterial;</li> 
+                        <li>Infecção urinária;</li> 
+                        <li>Pneumonia bacteriana;</li> 
+                    </ul>
+                </strong>
+              </p>
+              <h5>Exemplos de dados:</h5>
+              <div class="table-responsive" style="overflow-x: auto;">
+                <table class="table table-bordered table-sm">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Observação Médica</th>
+                      <th>Relatório Pessoal</th>
+                      <th>Pressão</th>
+                      <th>Saturação</th>
+                      <th>Peso</th>
+                      <th>Exames Realizados</th>
+                      <th>Histórico Familiar</th>
+                      <th>Condições Pré-existentes</th>
+                      <th>Medicações</th>
+                      <th>Restrições</th>
+                      <th>Temperatura</th>
+                      <th>Doença</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Sensibilidade na região lombar.</td>
+                      <td>Dor ao urinar e desconforto abdominal.</td>
+                      <td>115x75</td>
+                      <td>99%</td>
+                      <td>59</td>
+                      <td>EAS, urocultura</td>
+                      <td>Sem histórico relevante.</td>
+                      <td>Candidíase recorrente</td>
+                      <td>Anticoncepcional oral</td>
+                      <td>Evitar bebidas ácidas</td>
+                      <td>37.8°C</td>
+                      <td>Infecção urinária</td>
+                    </tr>
+                    <tr>
+                      <td>Paciente apresenta poliúria e perda de peso.</td>
+                      <td>Sede excessiva e cansaço constante.</td>
+                      <td>130x85</td>
+                      <td>97%</td>
+                      <td>74</td>
+                      <td>Glicemia de jejum, hemoglobina glicada</td>
+                      <td>Mãe diabética.</td>
+                      <td>Dislipidemia</td>
+                      <td>Nenhuma</td>
+                      <td>Evitar açúcares simples</td>
+                      <td>36.4°C</td>
+                      <td>Diabetes tipo 2</td>
+                    </tr>
+                    <tr>
+                      <td>Paciente relata dor de cabeça frequente.</td>
+                      <td>Dor de cabeça matinal e cansaço.</td>
+                      <td>150x95</td>
+                      <td>98%</td>
+                      <td>80</td>
+                      <td>MAPA, eletrocardiograma</td>
+                      <td>Pai hipertenso.</td>
+                      <td>Sobrepeso</td>
+                      <td>Nenhuma</td>
+                      <td>Redução de sal na dieta</td>
+                      <td>36.7°C</td>
+                      <td>Hipertensão arterial</td>
+                    </tr>
+                    <tr>
+                      <td>Presença de crepitações pulmonares na ausculta.</td>
+                      <td>Tosse com catarro e febre há 3 dias.</td>
+                      <td>120x80</td>
+                      <td>94%</td>
+                      <td>68</td>
+                      <td>Raio-X de tórax, hemograma</td>
+                      <td>Histórico de asma na família.</td>
+                      <td>Nenhuma</td>
+                      <td>Nenhuma</td>
+                      <td>Nenhuma</td>
+                      <td>38.2°C</td>
+                      <td>Pneumonia bacteriana</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+      
+              <hr>
+      
+              <div>
+                <h5>Sobre os exemplos e a IA</h5>
+                <p>
+                  Os exemplos acima mostram casos simulados utilizados para treinar nossa inteligência artificial. Cada linha representa um cenário clínico que foi analisado e classificado por nossa IA.
+                </p>
+                <p>
+                  Nosso modelo é baseado na técnica <strong>Random Forest</strong>, que combina múltiplas análises para estimar a doença mais provável com base nas suas informações. Isso significa que a IA pode identificar padrões mesmo que seus dados sejam diferentes dos exemplos mostrados.
+                </p>
+                <ul>
+                  <li>A IA não faz apenas comparação direta, ela <strong>detecta padrões complexos</strong> entre diversos dados.</li>
+                  <li>A resposta pode <strong>variar</strong> mesmo se seus dados forem parecidos com algum caso da tabela.</li>
+                  <li>A <strong>probabilidade exibida</strong> mostra o quanto a IA está confiante naquela predição.</li>
+                </ul>
+                <p>
+                    Para utilizar-la pode preencher o formulário seguindo o padrão de dados que temos acima, podendo acrescentar ou reduzir palavras além de modificar a ordem dela, uma vez concluido basta Enviar para Anáise que em alguns instantes nossa Ia te retornara as conclusões dela.
+                  </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Entendi</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+<div class="container mt-4">
+  <div class="row g-3">
+    <!-- Formulário -->
+    <div class="col-12 col-md-6">
+      <div class="card text-center h-100">
+        <div class="card-header">
+          Formulário Médico
+        </div>
+        <div class="card-body">
+          <form id="diagnosticForm">
+            <div class="mb-2">
+              <input type="text" class="form-control" name="observacoes_medicas" placeholder="Observações Médicas" required>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control" name="relatorio_pessoal" placeholder="Relatório Pessoal" required>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control" name="pressao" placeholder="Pressão" required>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control" name="saturacao_sangue" placeholder="Saturação do Sangue" required>
+            </div>
+            <div class="mb-2">
+              <input type="number" step="0.1" class="form-control" name="peso" placeholder="Peso (kg)" required>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control" name="exames_realizados" placeholder="Exames Realizados" required>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control" name="historico_med_familiar" placeholder="Histórico Médico Familiar" required>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control" name="condicoes_med_preexistentes" placeholder="Condições Médicas Preexistentes" required>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control" name="medicacoes_em_uso" placeholder="Medicações em Uso" required>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control" name="restricoes" placeholder="Restrições" required>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control" name="temperatura" placeholder="Temperatura" required>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-primary" onclick="enviarFormulario()">Enviar para Análise</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div class="col-12 col-md-6">
+      <div class="card text-center h-100">
+        <div class="card-header">
+          Resultado da IA
+        </div>
+        <div class="card-body" id="resultadoIA">
+          <p class="text-muted">Os resultados aparecerão aqui após a análise.</p>
+        </div>
+        <div class="card-footer text-muted">
+          HermesIA
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const instrucoesModal = new bootstrap.Modal(document.getElementById("instrucoesModal"));
+        instrucoesModal.show();
+      });
+
+
+  async function enviarFormulario() {
+    const form = document.forms["diagnosticForm"];
+    const formData = Object.fromEntries(new FormData(form));
+
+    const payload = {
+      id: 0,
+      ...formData,
+      peso: parseFloat(formData.peso)
+    };
+
+    try {
+      const response = await axios.post('https://3e52-187-182-196-183.ngrok-free.app/diagnostico/enviar-para-analise', payload);
+      renderResultados(response.data);
+    } catch (error) {
+      alert('Erro ao enviar para análise');
+      console.error(error);
+    }
+  }
+
+  function renderResultados(response) {
+    const container = document.getElementById('resultadoIA');
+    container.innerHTML = `
+      ${response.previsoes.map((previsao) => `
+        <div class="mb-3 text-start">
+          <h5>${previsao.doenca}:</h5>
+          <p>${Math.round(previsao.probabilidade * 100)}%</p>
+          <input type="range" class="percent-range" min="0" max="100" value="${Math.round(previsao.probabilidade * 100)}"
+            style="background: linear-gradient(to right, #77b82a ${Math.round(previsao.probabilidade * 100)}%, #99ca5f ${Math.round(previsao.probabilidade * 100)}%);
+                   height: 6px; border-radius: 30px;" disabled />
+        </div>
+      `).join('')}
+      <p><strong>Explicação:</strong> ${response.explicacao}</p>
+
+      <h5>Casos Similares:</h5>
+      <ul class="list-group">
+        ${response.casos_similares.map((caso) => `
+          <li class="list-group-item text-start">
+            <strong>${caso.doenca}</strong><br/>
+            <small><strong>Medicação:</strong> ${caso.medicacao}</small><br/>
+            <small><strong>Exames:</strong> ${caso.examesrealizados}</small>
+          </li>
+        `).join('')}
+      </ul>
+    `;
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
